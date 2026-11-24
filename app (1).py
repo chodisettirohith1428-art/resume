@@ -9,7 +9,8 @@ from pypdf import PdfReader
 # ---------- Setup ----------
 load_dotenv()  # reads GROQ_API_KEY from the .env file (local use)
 
-MODEL_NAME = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+
+MODEL_NAME = os.getenv("GROQ_MODEL", "llama-3.1-8b-instant")
 
 
 def get_api_key():
@@ -88,6 +89,12 @@ st.write(
 )
 
 api_key = get_api_key()
+_key = get_api_key()
+if _key:
+    try:
+        MODEL_NAME = pick_model(_key)
+    except Exception as e:
+        st.warning(f"Model auto-pick failed: {e}")
 if not api_key:
     st.error("GROQ_API_KEY not found. Add it to a .env file (see steps).")
     st.stop()
